@@ -1,0 +1,10 @@
+FROM local/c7-systemd
+RUN yum -y install epel-release
+RUN curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+RUN yum -y install redis nodejs; yum clean all; systemctl start redis.service; systemctl enable redis.service
+
+WORKDIR /usr/src/app
+RUN npm install supervisor express express-generator pm2 forever co kue mqtt clone absorb merge mongoose mongoose-uuid2 -g
+RUN cd /usr/src/app
+
+CMD ["/usr/sbin/init"]
